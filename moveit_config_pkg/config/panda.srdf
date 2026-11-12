@@ -54,9 +54,11 @@
     </group_state>
     <group_state name="close" group="gripper">
         <joint name="panda_finger_joint1" value="0.011"/>
+        <joint name="panda_finger_joint2" value="0.011"/>
     </group_state>
     <group_state name="open" group="gripper">
         <joint name="panda_finger_joint1" value="0.02"/>
+        <joint name="panda_finger_joint2" value="0.02"/>
     </group_state>
     <group_state name="pose1" group="arm">
         <joint name="panda_joint1" value="-0.7203"/>
@@ -91,6 +93,11 @@
     <disable_collisions link1="panda_leftfinger" link2="panda_link6" reason="Never"/>
     <disable_collisions link1="panda_leftfinger" link2="panda_link7" reason="Never"/>
     <disable_collisions link1="panda_leftfinger" link2="panda_rightfinger" reason="Default"/>
+    <disable_collisions link1="panda_rightfinger" link2="panda_link3" reason="Never"/>
+    <disable_collisions link1="panda_rightfinger" link2="panda_link4" reason="Never"/>
+    <disable_collisions link1="panda_rightfinger" link2="panda_link6" reason="Never"/>
+    <disable_collisions link1="panda_rightfinger" link2="panda_link7" reason="Never"/>
+    <disable_collisions link1="panda_rightfinger" link2="panda_leftfinger" reason="Default"/>
     <disable_collisions link1="panda_link0" link2="panda_link1" reason="Adjacent"/>
     <disable_collisions link1="panda_link0" link2="panda_link2" reason="Never"/>
     <disable_collisions link1="panda_link0" link2="panda_link3" reason="Never"/>

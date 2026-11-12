@@ -17,6 +17,8 @@
   <author email="to@to.com">moveit_config_pkg</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>franka_description</depend>
+  <depend>linkattacher_msgs</depend>
 
   <exec_depend>moveit_ros_move_group</exec_depend>
   <exec_depend>moveit_kinematics</exec_depend>

@@ -11,12 +11,6 @@
     <xacro:include filename="panda.ros2_control.xacro" />
     <xacro:include filename="panda.gz_attachers.xacro" />
 
-    <joint name="panda_finger_joint2_mimic" type="fixed">
-    <parent link="world" />
-    <child link="random" />
-    </joint>
-    <link name="random"/>
-
     <xacro:panda_ros2_control name="GazeboSimSystem" initial_positions_file="$(arg initial_positions_file)"/>
 
     <!-- Gazebo Harmonic: gz_ros2_control replaces gazebo_ros2_control -->

@@ -57,9 +57,10 @@
                 </state_interface>
             </joint>
             <joint name="panda_finger_joint2">
-                <!-- Mimic is taken from the <mimic> tag in the URDF (gz_ros2_control
-                     requires: no command interface on a mimic joint, state is fine). -->
-                <state_interface name="position"/>
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['panda_finger_joint2']}</param>
+                </state_interface>
             </joint>
 
         </ros2_control>

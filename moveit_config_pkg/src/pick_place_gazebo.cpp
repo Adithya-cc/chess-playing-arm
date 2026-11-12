@@ -370,11 +370,12 @@ public:
 
         // 7. Open Gripper & Detach Link
         publish_feedback("Detaching Object", 90.0);
-        setGripperState("open");
-        
         if (!target_object_id.empty()) {
             setLinkAttacher("cobot", "panda_leftfinger", target_object_id, "link", false);
             rclcpp::sleep_for(std::chrono::milliseconds(200));
+        setGripperState("open");
+        
+
         }
 
         // 8. Retract Upward
