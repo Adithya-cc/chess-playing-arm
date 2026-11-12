@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!--
+  Replacement for the Classic libgazebo_link_attacher.so.
+
+  Gazebo Sim's built-in DetachableJoint system creates/removes a fixed joint
+  between <parent_link> (on the robot) and <child_link> of <child_model>.
+  The child model must be named in the plugin, so we declare one plugin per
+  chess piece (names are read from the board-layout JSON).
+
+  Each plugin listens on
+      /gz_link_attacher/<piece>/attach   (gz.msgs.Empty)
+      /gz_link_attacher/<piece>/detach   (gz.msgs.Empty)
+  which gz_link_attacher.py (ROS services /ATTACHLINK, /DETACHLINK) drives
+  through ros_gz_bridge.
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="gz_piece_attacher" params="piece parent_link child_link">
+    <gazebo>
+      <plugin filename="gz-sim-detachable-joint-system" name="gz::sim::systems::DetachableJoint">
+        <parent_link>${parent_link}</parent_link>
+        <child_model>${piece}</child_model>
+        <child_link>${child_link}</child_link>
+        <attach_topic>/gz_link_attacher/${piece}/attach</attach_topic>
+        <detach_topic>/gz_link_attacher/${piece}/detach</detach_topic>
+        <output_topic>/gz_link_attacher/${piece}/state</output_topic>
+        <!-- pieces are spawned after the robot -->
+        <suppress_child_warning>true</suppress_child_warning>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- recursive helper: xacro has no loops -->
+  <xacro:macro name="gz_piece_attacher_rec" params="pieces i parent_link child_link">
+    <xacro:if value="${i &lt; len(pieces)}">
+      <xacro:gz_piece_attacher piece="${pieces[i]}" parent_link="${parent_link}" child_link="${child_link}"/>
+      <xacro:gz_piece_attacher_rec pieces="${pieces}" i="${i + 1}" parent_link="${parent_link}" child_link="${child_link}"/>
+    </xacro:if>
+  </xacro:macro>
+
+  <xacro:macro name="gz_piece_attachers" params="layout_file parent_link:=panda_leftfinger child_link:=link">
+    <xacro:property name="_layout" value="${xacro.load_yaml(layout_file)}"/>
+    <xacro:property name="_pieces" value="${[v for v in _layout.values()]}"/>
+    <xacro:gz_piece_attacher_rec pieces="${_pieces}" i="0" parent_link="${parent_link}" child_link="${child_link}"/>
+  </xacro:macro>
+
+</robot>

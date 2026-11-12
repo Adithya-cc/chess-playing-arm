@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!-- Gazebo Harmonic (gz-sim 8) version of the chess-cobot world. -->
+<sdf version="1.9">
+  <world name="default">
+
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <!-- Gazebo Sim is modular: the world must load the systems it needs. -->
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <gravity>0 0 -9.8</gravity>
+
+    <!-- Sun (replaces model://sun, which is not bundled with Harmonic) -->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- Ground plane (replaces model://ground_plane) -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.8 0.8 0.8 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Overhead RealSense (RGB-D). Pitch 90 deg => looks straight down. -->
+    <include>
+      <uri>model://realsense_camera</uri>
+      <pose>0 0 2.5 0 1.5708 0</pose>
+      <static>true</static>
+    </include>
+
+    <!-- Table = one solid box, same size/pose as the MoveIt "table_surface"
+         collision object (1.524 x 0.914 x 1.011 m, top face at z = 1.011). -->
+    <model name="table">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <pose>0 0 0.5055 0 0 0</pose>
+          <geometry><box><size>1.524 0.914 1.011</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <pose>0 0 0.5055 0 0 0</pose>
+          <geometry><box><size>1.524 0.914 1.011</size></box></geometry>
+          <material>
+            <ambient>0.45 0.3 0.18 1</ambient>
+            <diffuse>0.55 0.38 0.22 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <include>
+      <uri>model://chessboard</uri>
+      <name>chess_board</name>
+      <pose>0 0 1.015 0 0 0</pose>
+    </include>
+
+    <!-- NOTE: the Classic "libgazebo_link_attacher.so" world plugin is gone.
+         Grasping is now done with per-piece DetachableJoint plugins declared in
+         config/panda.gz_attachers.xacro (see README_HARMONIC.md). -->
+
+  </world>
+</sdf>

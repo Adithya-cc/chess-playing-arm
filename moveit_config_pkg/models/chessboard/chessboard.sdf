@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="chessboard">
+    <!-- Set to 1 if you want the board fixed on top of a table -->
+    <static>1</static> 
+    
+    <link name="link">
+
+      <inertial>
+        <mass>1.5</mass> <!-- Realistic mass for a 70x70x4 cm board -->
+        <inertia>
+          <ixx>0.03130</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>0.03130</iyy>
+          <iyz>0.0</iyz>
+          <izz>0.06250</izz>
+        </inertia>
+      </inertial>
+
+      <!-- FIXED: Matched box collision to 70cm x 70cm x 4cm visual mesh -->
+      <collision name="collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.50 0.50 0.02</size>
+          </box>
+        </geometry>
+        <!-- ... friction settings ... -->
+        
+      </collision>
+
+      <!-- Updated Visual Mesh Scale -->
+      <visual name="visual1">
+        <pose>0 0 0 0 0 -1.5708</pose>
+        <geometry>
+          <mesh>
+            <uri>model://chessboard/meshes/chessboard.dae</uri>
+            <!-- Scaled to 50cm x 50cm x 2cm -->
+            <scale>10 10 0.4</scale>
+          </mesh>
+        </geometry>
+        <!-- Harmonic (ogre2) ignores/washes out the Collada texture, so bind it explicitly -->
+        <material>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://chessboard/meshes/chessboard.png</albedo_map>
+              <metalness>0.0</metalness>
+              <roughness>0.8</roughness>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+</sdf>

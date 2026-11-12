@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: robotic_arms_control
+    relative_path: urdf/panda_arm.urdf
+  srdf:
+    relative_path: config/panda.srdf
+  package_settings:
+    author_name: moveit_config_pkg
+    author_email: to@to.com
+    generated_timestamp: 1794380746

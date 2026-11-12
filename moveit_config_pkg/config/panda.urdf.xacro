@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+    <!-- Chess layout (square -> piece model name). One DetachableJoint "grasp slot" is generated per piece. -->
+    <xacro:arg name="board_layout_file" default="$(find moveit_config_pkg)/config/initial_board_layout.json" />
+
+    <!-- Import panda urdf file -->
+    <xacro:include filename="$(find robotic_arms_control)/urdf/panda_arm.urdf" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="panda.ros2_control.xacro" />
+    <xacro:include filename="panda.gz_attachers.xacro" />
+
+    <joint name="panda_finger_joint2_mimic" type="fixed">
+    <parent link="world" />
+    <child link="random" />
+    </joint>
+    <link name="random"/>
+
+    <xacro:panda_ros2_control name="GazeboSimSystem" initial_positions_file="$(arg initial_positions_file)"/>
+
+    <!-- Gazebo Harmonic: gz_ros2_control replaces gazebo_ros2_control -->
+    <gazebo>
+        <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+            <robot_param>robot_description</robot_param>
+            <robot_param_node>robot_state_publisher</robot_param_node>
+            <parameters>$(find moveit_config_pkg)/config/ros2_controllers.yaml</parameters>
+        </plugin>
+    </gazebo>
+
+    <!-- Link attacher replacement (one DetachableJoint per chess piece) -->
+    <xacro:gz_piece_attachers layout_file="$(arg board_layout_file)"/>
+</robot>

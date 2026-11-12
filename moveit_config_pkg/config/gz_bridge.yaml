@@ -1,0 +1,29 @@
+# Static ros_gz_bridge topics. Per-piece attach/detach topics are appended at launch time.
+- ros_topic_name: /clock
+  gz_topic_name: /clock
+  ros_type_name: rosgraph_msgs/msg/Clock
+  gz_type_name: gz.msgs.Clock
+  direction: GZ_TO_ROS
+
+# Same ROS topic names the Classic gazebo_ros_camera plugin published, so
+# testmodel.py / chess_managment.py / moveit sensors_3d.yaml need no changes.
+- ros_topic_name: /realsense/depth/image_rect_raw      # RGB image (as in the Classic setup)
+  gz_topic_name: /realsense/depth/image
+  ros_type_name: sensor_msgs/msg/Image
+  gz_type_name: gz.msgs.Image
+  direction: GZ_TO_ROS
+- ros_topic_name: /realsense/depth/image_raw           # depth image
+  gz_topic_name: /realsense/depth/depth_image
+  ros_type_name: sensor_msgs/msg/Image
+  gz_type_name: gz.msgs.Image
+  direction: GZ_TO_ROS
+- ros_topic_name: /realsense/depth/points
+  gz_topic_name: /realsense/depth/points
+  ros_type_name: sensor_msgs/msg/PointCloud2
+  gz_type_name: gz.msgs.PointCloudPacked
+  direction: GZ_TO_ROS
+- ros_topic_name: /realsense/depth/camera_info
+  gz_topic_name: /realsense/depth/camera_info
+  ros_type_name: sensor_msgs/msg/CameraInfo
+  gz_type_name: gz.msgs.CameraInfo
+  direction: GZ_TO_ROS

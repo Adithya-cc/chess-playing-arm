@@ -1,0 +1,12 @@
+# Goal
+string source_sqr
+string target_sqr
+string piece_id
+---
+# Result
+bool success
+string message
+---
+# Feedback
+string current_stage
+float32 percentage_complete
